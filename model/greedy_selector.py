@@ -60,3 +60,17 @@ if __name__ == "__main__":
         sys.exit(1)
     _, in_file, out_file, L, T, N = sys.argv
     greedy_select(in_file, out_file, int(L), int(T), int(N))
+
+
+"""
+python3 greedy_selector.py ../our_data/test_llm_clean.txt ../our_data/greedy_train.txt 6 3 500
+
+cat ../our_data/greedy_train.txt | ./contiguous-fa-lang 6 3 | fstcompile --acceptor > train_greedy.fst
+
+./makerep-contiguous-fa-lang 6 3 | fstcompile --acceptor > repertoire.fst
+
+ fstdifference repertoire.fst train_greedy.fst | fstminimize > trained_repertoire.fst
+
+ ./contiguous-negative-selection-lang ../our_data/train_human_clean.txt 6 3 < trained_repertoire.fst > reactivity_greedy.txt
+
+"""
