@@ -7,9 +7,11 @@ import matplotlib.pyplot as plt
 LLM_FILE = "our_data/test_llm_clean.txt"
 HUMAN_FILE = "our_data/train_human_clean.txt"
 WORK_DIR = "ga_output"
-POP_SIZE = 10
+#POP_SIZE = 10
+POP_SIZE = 20
 CHROMOSOME_SIZE = 500
-GENERATIONS = 10
+#GENERATIONS = 10
+GENERATIONS = 20
 SEED = 42
 
 # === UTILS ===
@@ -69,7 +71,8 @@ def crossover(parent1, parent2):
     cut = len(parent1) // 2
     return parent1[:cut] + parent2[cut:], parent2[:cut] + parent1[cut:]
 
-def mutate(individual, pool, rate=0.05):
+#def mutate(individual, pool, rate=0.05):
+def mutate(individual, pool, rate=0.1):
     return [random.choice(pool) if random.random() < rate else x for x in individual]
 
 # === MAIN GA LOOP ===
@@ -90,7 +93,9 @@ for gen in range(GENERATIONS):
         print(f"Individual {i} fitness: {score}")
 
     fitnesses.sort(reverse=True, key=lambda x: x[0])
-    top = [ind for (_, ind) in fitnesses[:2]]
+    #top = [ind for (_, ind) in fitnesses[:2]]
+    top = [ind for (_, ind) in fitnesses[:POP_SIZE // 2]]
+
 
     new_pop = top.copy()
     while len(new_pop) < POP_SIZE:
@@ -107,7 +112,7 @@ write_lines(f"{WORK_DIR}/best_training_set.txt", best_set)
 print(f"\nBest score: {best_score} — saved to {WORK_DIR}/best_training_set.txt")
 
 # Save fitness log
-with open(f"{WORK_DIR}/fitness_log.csv", "w") as log_file:
+with open(f"{WORK_DIR}/fitness_log_2.csv", "w") as log_file:
     log_file.write("Generation,Individual,Fitness\n")
     for gen, ind, score in fitness_log:
         log_file.write(f"{gen},{ind},{score}\n")
@@ -121,5 +126,5 @@ plt.title("Fitness over Generations")
 plt.xlabel("Generation")
 plt.ylabel("Fitness Score")
 plt.grid(True)
-plt.savefig(f"{WORK_DIR}/fitness_plot.png")
-print(f"\n Fitness plot saved to {WORK_DIR}/fitness_plot.png")
+plt.savefig(f"{WORK_DIR}/fitness_plot_2.png")
+print(f"\n Fitness plot saved to {WORK_DIR}/fitness_plot_2.png")
