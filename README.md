@@ -10,11 +10,11 @@ The repository includes:
 
 -The original model code and our additions (Greedy Selector, Genetic Algorithm)
 
-Input sequences (data/)
+-Input sequences (data/)
 
-A new dataset (our_data/) and Python scripts for training set optimization 
+-A new dataset (our_data/) and Python scripts for training set optimization 
 
-Reactivity analysis tools to evaluate classifier performance
+-Reactivity analysis tools to evaluate classifier performance
 
 All analyses from the original manuscript can be reproduced using the contents of model/ and data/, while new experiments and applications are documented below.
 
