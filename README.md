@@ -2,13 +2,23 @@
 [![DOI](https://zenodo.org/badge/140730506.svg)](https://zenodo.org/badge/latestdoi/140730506)
 
 This repository contains the simulation code for the manuscript "Is T Cell Negative Selection a Learning Algorithm?".
-It currently contains the code for the negative selection model itself (in the `model/` folder), as well as the 
-sequences used in the paper (in the `data/` folder). See below for a description on how to use this code, as well as
-the README.md files in each of those folders. 
+It includes the original implementation of a negative selection model based on finite automata, as well as a new extension that builds on this baseline to address a real-world classification task.
 
-All analyses are described in the methods section of the manuscript, so the content of the `model/` and `data/` folders
-should together suffice to reproduce all figures in the manuscript. For convenience, we have also uploaded a complete folder
-with all (simulation, analysis and plotting) code that can be used to generate the figures automatically under `figures/`. This folder has a separate README on how to reproduce all figures automatically. The information below provides a more general overview of the model and its usage.
+In the original work, negative selection was applied to peptides and synthetic strings to study self–nonself discrimination in the immune system. This extended version applies the same core principles to a natural language task: distinguishing between human-written and LLM-generated English text using motif-based learning.
+
+The repository includes:
+
+-The original model code and our additions (Greedy Selector, Genetic Algorithm)
+
+Input sequences (data/)
+
+A new dataset (our_data/) and Python scripts for training set optimization 
+
+Reactivity analysis tools to evaluate classifier performance
+
+All analyses from the original manuscript can be reproduced using the contents of model/ and data/, while new experiments and applications are documented below.
+
+Steps 1–5 reproduce the baseline negative selection simulation described in the original paper. The steps after that extend the method to a new domain: distinguishing human vs LLM-generated natural language.
 
 
 ## About the model
@@ -143,3 +153,47 @@ contiguous-negative-selection-lang ../example/testset-xhosa-n500.txt 6 3 < reper
 
 Dividing these numbers by the total repertoire size obtained in step 4 and multiplying by 1 million yields Figure 2C.
 
+
+### Extension – Distinguishing Human vs LLM-Generated Language
+
+### Step 6 : Preprocess human and LLM text
+
+```
+python3 segment_text.py our_data/human_raw.txt our_data/human_clean.txt 6
+python3 segment_text.py our_data/llm_raw.txt our_data/llm_clean.txt 6
+```
+
+### Step 7 : Generate a complete repertoire
+
+```
+makerep-contiguous-fa-lang 6 3 | fstcompile --acceptor > full_repertoire.fst
+```
+
+### Step 8 :  Train using a random sample of LLM-generated text
+
+```
+shuf our_data/llm_clean.txt | head -n 500 > our_data/train_llm_random.txt
+cat our_data/train_llm_random.txt | ./contiguous-fa-lang 6 3 | fstcompile --acceptor > train_random.fst
+fstdifference full_repertoire.fst train_random.fst | fstminimize > trained_repertoire.fst
+```
+
+### Step 9 :  Train using greedy motif coverage
+
+```
+python3 greedy_selector.py our_data/llm_clean.txt our_data/train_llm_greedy.txt 6 3 500
+cat our_data/train_llm_greedy.txt | ./contiguous-fa-lang 6 3 | fstcompile --acceptor > train_greedy.fst
+fstdifference full_repertoire.fst train_greedy.fst | fstminimize > trained_repertoire.fst
+
+```
+
+### Step 10 :   Train using genetic algorithm
+
+```
+python3 genetic_training.py
+```
+
+### Step 11 :   Train using genetic algorithm
+
+```
+python3 reactivity_analysis.py
+```
