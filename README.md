@@ -191,9 +191,23 @@ fstdifference full_repertoire.fst train_greedy.fst | fstminimize > trained_reper
 ```
 python3 genetic_training.py
 ```
+### Step 11 :  Test trained repertoire on human or LLM text
 
-### Step 11 :   Train using genetic algorithm
+```
+./contiguous-negative-selection-lang our_data/human_clean.txt 6 3 < trained_repertoire.fst > reactivity_human.txt
+./contiguous-negative-selection-lang our_data/llm_clean.txt 6 3 < trained_repertoire.fst > reactivity_llm.txt
+```
+
+### Step 12 :   Train using genetic algorithm
 
 ```
 python3 reactivity_analysis.py
 ```
+
+### Step 13 :    Run the analysis script
+
+```
+python3 reactivity_analysis.py
+
+```
+
