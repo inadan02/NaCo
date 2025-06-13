@@ -26,7 +26,7 @@ def run_metrics(input_file, label):
         print(f"  {k}: {v}")
     return result
 
-def plot_histogram(file_paths, labels, colors, output_file="reactivity_histogram2.png"):
+def plot_histogram(file_paths, labels, colors, output_file="reactivity_histogram3.png"):
     plt.figure(figsize=(10, 6))
     for path, label, color in zip(file_paths, labels, colors):
         with open(path) as f:
@@ -45,31 +45,20 @@ def plot_histogram(file_paths, labels, colors, output_file="reactivity_histogram
 
 # === RUNNING ===
 
-# Metrics
-run_metrics(
-    "/mnt/c/MASTER/SEM2/NaturalComputing/negative-selection-2020-master/model/reactivity_greedy.txt",
-    "Greedy Training"
-)
+BASE = "model"          # path relative to the script location
 
-run_metrics(
-    "/mnt/c/MASTER/SEM2/NaturalComputing/negative-selection-2020-master/model/reactivity_human.txt",
-    "Random Training"
-)
-
-run_metrics(
-    "/mnt/c/MASTER/SEM2/NaturalComputing/negative-selection-2020-master/model/reactivity_genetic.txt",
-    "Genetic Training"
-)
+run_metrics(f"{BASE}/reactivity_greedy.txt",  "Greedy Training")
+run_metrics(f"{BASE}/reactivity_human0.txt",   "Random Training")
+run_metrics(f"{BASE}/reactivity_genetic.txt", "Genetic Training")
 
 # Histogram saved instead of shown
 plot_histogram(
     [
-        "/mnt/c/MASTER/SEM2/NaturalComputing/negative-selection-2020-master/model/reactivity_human.txt",
-        "/mnt/c/MASTER/SEM2/NaturalComputing/negative-selection-2020-master/model/reactivity_greedy.txt",
-        "/mnt/c/MASTER/SEM2/NaturalComputing/negative-selection-2020-master/model/reactivity_genetic.txt"
+        f"{BASE}/reactivity_human.txt",
+        f"{BASE}/reactivity_greedy.txt",
+        f"{BASE}/reactivity_genetic.txt",
     ],
     ["Random", "Greedy", "Genetic"],
     ["blue", "green", "red"],
-    output_file="reactivity_histogram2.png"
+    output_file="reactivity_histogram3.png",
 )
-
