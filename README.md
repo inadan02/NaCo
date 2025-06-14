@@ -6,6 +6,8 @@ It includes the original implementation of a negative selection model based on f
 
 In the original work, negative selection was applied to peptides and synthetic strings to study self–nonself discrimination in the immune system. This extended version applies the same core principles to a natural language task: distinguishing between human-written and LLM-generated English text using motif-based learning.
 
+## There are 2 branches that contain our code, each with their own README file (main branch and feature_ozan branch)
+
 The repository includes:
 
 -The original model code and our additions (Greedy Selector, Genetic Algorithm)
