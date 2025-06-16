@@ -212,4 +212,15 @@ python3 reactivity_analysis.py
 python3 reactivity_analysis.py
 
 ```
+## Step 14 :    Other stats & analysis
 
+To run the other statistical analyses, just cd into the stats folder, change all paths respectively and run whichever. The outputs will pop up in the console.
+
+```
+python3 balanced.py
+python3 statver.py
+python3 baseline_classifer.py
+python3 compare.py
+python3 frequency_analysis.py
+```
+The linear regression analyses are also in the jupyter notebook linear_regression_trials.ipynb. Choose appropriate python version, download the required modules and run.
